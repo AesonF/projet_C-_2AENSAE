@@ -1,4 +1,4 @@
-# Black-Scholes model for pricing : implementation and applications
+# Total BS : pricing with the Black-Scholes model
 
 ## Team
 Yacine Falaki, Aeson Feehan
