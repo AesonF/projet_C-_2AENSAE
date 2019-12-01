@@ -35,13 +35,13 @@ class Matrix {
 private:
     int n;
     int m;
-    int **p;
+    type **p;
     
     void allocArray()
     {
-        p = new int*[m];
+        p = new type*[m];
         for(int i=0; i<m; i++){
-            p[i] = new int[n];
+            p[i] = new type[n];
         }
     }
 public:
@@ -80,5 +80,11 @@ public:
         delete [] p;
     }
 };
+
+void matCreate(BSparams &par, std::vector<float> &prices, Matrix<float> &Mat);
+
+void BSSol(BSparams &par, std::vector<float> &prices);
+
+void singleSim(float tmax, int n, float S0, float sigma, float mu);
 
 #endif /* EqRes_hpp */
