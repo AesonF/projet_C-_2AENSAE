@@ -35,30 +35,49 @@ class Matrix {
 private:
     int n;
     int m;
-    type val[]; //valeurs, rangees dans une seule tres longue ligne
+    int **p;
+    
+    void allocArray()
+    {
+        p = new int*[m];
+        for(int i=0; i<m; i++){
+            p[i] = new int[n];
+        }
+    }
 public:
     Matrix(int a, int b){
         n = a;
         m = b;
-        type V[n*m];
-        for(int k=0; k<n*m; k++){
-            V[k] = 0;
+        allocArray();
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                p[i][j] = 0;
+            }
         }
-        val = V;
+    }
+    
+    void load(int i, int j, type a){
+        p[i][j] = a;
     }
     
     type iloc(int i, int j) { //get value (i,j)
-        return val[i*m + j];
+        return p[i][j];
     }
     
     void show(){
-        for(int k=0; k<n*m-1; k++){
-            std::cout << val[k] << ',';
-            if(k%n == 0){
-                std::cout << std::endl;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                std::cout << p[i][j] << ',';
             }
+            std::cout << std::endl;
         }
-        std::cout << val[n*m-1] << std::endl;
+    }
+    
+    ~Matrix(){
+        for(int i = 0; i < m; i++){
+            delete [] p[i];
+        }
+        delete [] p;
     }
 };
 

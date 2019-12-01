@@ -9,6 +9,8 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <valarray>
+#include "EqRes.hpp"
 
 /* SINGLE SIMULATION :
  Cette première simulation du cours d'un produit dérivé dans le cadre du modèle de
@@ -41,7 +43,17 @@ void singleSim(float tmax, int n, float S0, float sigma, float mu)
     }
 }
 
+void valarrayExamples(){
+    Matrix<int> Mat(2,2);
+    Mat.load(0,0,1);
+    Mat.load(0,1,0);
+    Mat.load(1,0,0);
+    Mat.load(1,1,1);
+    Mat.show();
+}
 
 int main(int argc, const char * argv[]) {
     singleSim(10,1000,100,0.3,0.1);
+    valarrayExamples();
+    return 0;
 }
