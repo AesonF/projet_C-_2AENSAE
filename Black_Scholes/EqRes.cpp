@@ -7,8 +7,10 @@
 //
 
 #include "EqRes.hpp"
-#include <valarray> //type matriciel
+#include <valarray> //type matriciel (ca ne marche pas)
 #include <vector>
+
+
 
 /* BSSol = Black-Shcholes solution : prend en entrée une instance de la classe
 BSparams, définie en EqRes.hpp, ainsi que le vecteur des prix initiaux du sous-
@@ -19,14 +21,6 @@ dutemps t. La fonction résolvant l'EDP de Black-Scholes doit donc prendre en
 entrée les paramètres de modèle donnes ci-dessus, travaille avec une matrice
 de toutes les valeurs pour tous les prix envisageables (discrets ici) et renvoie
 un vecteur des valorisations pour un prix donne.*/
-
-
-std::vector<float> BSSol(BSparams &par, std::vector<float> &prices){
-    std::vector<float> Sol(par.n,0); //0 = valeur par defaut
-    std::valarray<float> Mat(par.m, par.n);
-    matCreate(&par, &prices, &Mat);
-    Mat.
-}
 
 //this one creates the transition matrix for going from t to t+1
 void matCreate(BSparams &par, std::vector<float> &prices, std::valarray<float> &Mat){
@@ -48,6 +42,17 @@ void matCreate(BSparams &par, std::vector<float> &prices, std::valarray<float> &
             Mat[i,j] = a;
         }
     }
+}
+
+void dispMat(std::valarray<float> &Mat){
+    
+}
+
+void BSSol(BSparams &par, std::vector<float> &prices){
+    std::vector<float> Sol(par.n,0); //0 = valeur par defaut
+    std::valarray<float> Mat(par.m, par.n);
+    matCreate(par, prices, Mat);
+    //dispMat(&Mat);
 }
 
 //"matrix[ std::slice( 2, col, row ) ] = pi;" sets third column to pi
