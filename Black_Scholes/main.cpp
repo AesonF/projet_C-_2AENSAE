@@ -2,9 +2,7 @@
 //  main.cpp
 //  Black_Scholes
 //
-//  Created by Aeson Feehan on 30/10/2019.
-//  Copyright © 2019 Aeson Feehan. All rights reserved.
-//
+//  Created by Yacine Falaki and Aeson Feehan.
 
 #include <iostream>
 #include <vector>

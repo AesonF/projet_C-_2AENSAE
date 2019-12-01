@@ -2,12 +2,12 @@
 //  EqRes.cpp
 //  Black_Scholes
 //
-//  Created by Aeson Feehan on 30/11/2019.
-//  Copyright © 2019 Aeson Feehan. All rights reserved.
+//  Created by Yacine Falaki and Aeson Feehan.
 //
+//  DESCRIPTION:
+//  algorithms for the resolution of the Black-Scholes equation
 
 #include "EqRes.hpp"
-#include <valarray> //type matriciel (ca ne marche pas)
 #include <vector>
 #include <cmath>
 #include <random>
@@ -21,64 +21,6 @@ BSparams::BSparams(int _n, int _m, float _tmax, float _sigma, float _mu){
     sigma = _sigma;
     mu = _mu;
 }
-
-//Matrix DEFINITION DES FONCTIONS DE CLASSE
-void Matrix::allocArray()
-{
-    p = new float*[m];
-    for(int i=0; i<m; i++){
-        p[i] = new float[n];
-    }
-}
-Matrix::Matrix(int a, int b){
-    n = a;
-    m = b;
-    allocArray();
-    for(int i=0; i<n; i++){
-        for(int j=0; j<m; j++){
-            p[j][i] = 0;
-        }
-    }
-}
-void Matrix::load(int i, int j, float a){
-    p[j][i] = a;
-}
-float Matrix::iloc(int i, int j) { //get value (i,j)
-    return p[j][i];
-}
-void Matrix::show(){
-    for(int i=0; i<n; i++){
-        for(int j=0; j<m; j++){
-            std::cout << p[j][i] << ',';
-        }
-        std::cout << std::endl;
-    }
-}
-
-int Matrix::lin(){return n;}
-int Matrix::col(){return m;}
-
-Matrix Matrix::operator *(Matrix &A){
-    Matrix Res(n,A.col());
-    for(int i=0; i<n; i++){
-        for(int j=0; j<A.col(); j++){
-            float Res_ij = 0; //valeur (i,j) de la matrice resultante de l'operation ("Res")
-            for(int k=0; k<m; k++){
-                Res_ij += p[k][i]*A.iloc(k,j);
-            }
-            Res.load(i,j,Res_ij); //insertion de la valeur dans la matrice Res
-        }
-    }
-    return Res;
-}
-
-Matrix::~Matrix(){
-    for(int j=0; j<m; j++){
-        delete [] p[j];
-    }
-    delete [] p;
-}
-
 
 
 
