@@ -1,0 +1,17 @@
+On dispose d’une classe Matrix (matrice au sens mathématique). Cette classe contient les variables privées 
+	- int n (nombre de lignes),
+	- int m (nombre de colonnes)
+	- float **p (array d’arrays de pointeurs)
+ainsi qu’un certain nombre de fonctions publiques, dont des constructeurs, un destructeur et une fonction multipliant deux matrices. Ces trois fonctions posent problème, car elles ne permettent pas d’effectuer des opérations de type
+	- “A = A*A”
+	- “A = A*B”
+	- “A = B*A”
+	- “A = B*B”
+alors qu’elles permettent d’effectuer l’opération
+	- “A = B*C”
+où A,B,C sont distinctes. Cela pose problème lorsqu’il faut calculer des puissances de matrices, car il faut alors créer deux nouvelles matrices pour chaque incrément de l’exposant (2000 nouvelles variables distinctes pour calculer A^1000). Au contraire, en effectuant une des quatre opérations-types mentionnées ci-dessus, le compilateur affiche l'erreur
+
+Black_Scholes(8884,0x1000b65c0) malloc: *** error for object 0x1005413c0: pointer being freed was not allocated
+Black_Scholes(8884,0x1000b65c0) malloc: *** set a breakpoint in malloc_error_break to debug
+
+et le programme tourne en boucle sans surcharge de mémoire, jusqu'à ce qu'il soit arrêté manuellement.
