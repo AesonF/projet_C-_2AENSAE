@@ -8,10 +8,10 @@
 //  algorithms for the resolution of the Black-Scholes equation
 
 #include "EqRes.hpp"
+#include "Matrix.hpp"
 #include <vector>
 #include <cmath>
 #include <random>
-
 
 //BSparams DEFINITION DES FONCTIONS DE CLASSE
 BSparams::BSparams(int _n, int _m, float _tmax, float _sigma, float _mu){
@@ -64,16 +64,27 @@ BSparams, définie en EqRes.hpp, ainsi que le vecteur des prix initiaux du sous-
 jacent, sous forme d'un vecteur de taille par.m */
 
 void BSSol(BSparams &par, std::vector<float> &prices){
-    std::vector<float> Sol(par.n,0); //0 = valeur par defaut
+    Matrix Sol(par.m,1,prices);
+    /* "On ne peut pas faire des mathématiques en confondant les
+        vecteurs et les matrices colonnes."
+                              — Sandie Souchet
+    */
     Matrix Mat(par.m, par.n);
     matCreate(par, prices, Mat);
+    Matrix m = Mat.copy();
+    for(int t=0; t<par.tmax; t++){
+        m *= Mat;
+    }
+    Matrix temp = m*Sol;
+    Sol = temp;
+    Sol.show();
 }
 
 
 
 /* SINGLE SIMULATION :
- Cette première simulation du cours d'un produit dérivé dans le cadre du modèle de
- Black-Scholes se fait de manière itérative, dans une seule fonction. Arguments :
+ Cette première valorisation d'un call européen vanille dans le cadre du
+modèle se fait de manière itérative, dans une seule fonction. Arguments :
  - tmax  = temps de la simulation
  - n     = nombre de subdivisions temporelles
  - S0    = prix initial du sous-jacent

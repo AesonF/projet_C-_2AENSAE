@@ -14,6 +14,8 @@
 #include <iostream>
 #include "Matrix.hpp"
 
+class Matrix; //déclaration anticipée
+
 //classe des paramètres de modele
 class BSparams {
 public:
@@ -30,7 +32,5 @@ void matCreate(BSparams &par, std::vector<float> &prices, Matrix &Mat);
 void BSSol(BSparams &par, std::vector<float> &prices);
 
 void singleSim(float tmax, int n, float S0, float sigma, float mu);
-
-void quickExp(Matrix A);
 
 #endif /* EqRes_hpp */
