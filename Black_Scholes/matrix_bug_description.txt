@@ -1,3 +1,5 @@
+PROBLÈME (résolu) :
+
 On dispose d’une classe Matrix (matrice au sens mathématique). Cette classe contient les variables privées 
 	- int n (nombre de lignes),
 	- int m (nombre de colonnes)
@@ -15,3 +17,12 @@ Black_Scholes(8884,0x1000b65c0) malloc: *** error for object 0x1005413c0: pointe
 Black_Scholes(8884,0x1000b65c0) malloc: *** set a breakpoint in malloc_error_break to debug
 
 et le programme tourne en boucle sans surcharge de mémoire, jusqu'à ce qu'il soit arrêté manuellement.
+
+
+
+SOLUTION :
+
+Il s'agissait de surcharger l'opérateur d'affectation afin de copier tout le contenu d'une matrice, au lieu de juste créer un nouveau pointeur vers la même matrice. Par exemple, pour l'opération "Matrix A = M", on avait
+	- sans surcharge : A et M sont la même variable unique
+	- avec surcharge : A et M sont distinctes, mais A est initialisée avec les mêmes valeurs que M
+Par ailleurs, par pragmatisme, on a également surchargé l'opérateur *= (multiplication à droite).
