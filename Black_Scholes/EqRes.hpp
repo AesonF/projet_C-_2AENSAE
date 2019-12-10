@@ -33,4 +33,6 @@ void BSSol(BSparams &par, std::vector<float> &prices);
 
 void singleSim(float tmax, int n, float S0, float sigma, float mu);
 
+std::vector<float> priceExample1(int gauge);
+
 #endif /* EqRes_hpp */

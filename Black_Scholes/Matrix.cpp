@@ -145,3 +145,34 @@ Matrix quickExp(Matrix &A, int a){
     }
     return C;
 }
+
+Matrix inverse(Matrix A){
+    int n =lin(A);
+    B=Matrix(n,n);
+    for (int i = 0; i < n; i++) {
+        //to create a identity matirx
+        B.load(i,i,1);
+    };
+    for(int i=0;i<n;i++){
+        for (int j=i ; j<n ; j++){
+            B.load(i,i,B.load(i,j)/A.load(i,i));          // B[i,j]=B[i,j]/A[i,i]
+            A.load(i,i,A.load(i,j)/A.load(i,i));          // A[i,j]=A[i,j]/A[i,i]
+                for (int k=i ; k<n ; k++){
+                    B.load(k,j,B.load(k,j)-B.load(k,i)*A.load(i,j));                              //B[k,j]=B[k,j]-B[k,i]*A[i,j]
+                    A.load(k,j,A.load(k,j)-A.load(k,i)*A.load(i,j));                              //A[k,j]=A[k,j]-A[k,i]*A[i,j]
+                 };
+          };
+    };
+        //On obtient à cette etape une matrice triangulaire
+    for(int i=n;i>0;i--){
+        for (int j=i ; j<n ; j++){
+            B.load(i,i,B.load(i,j)/A.load(i,i));
+            A.load(i,i,A.load(i,j)/A.load(i,i));
+                for (int k=i ; k>0 ; k--){
+                     B.load(k,j,B.load(k,j)-B.load(k,i)*A.load(i,j));
+                     A.load(k,j,A.load(k,j)-A.load(k,i)*A.load(i,j));
+                    };
+            };
+        };
+    return(B);
+}

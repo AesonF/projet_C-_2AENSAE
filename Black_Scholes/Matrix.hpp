@@ -39,4 +39,6 @@ public:
 
 Matrix quickExp(Matrix &A, int a);
 
+Matrix inverse(Matrix A);
+
 #endif /* Matrix_hpp */

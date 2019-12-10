@@ -10,8 +10,8 @@
 #include "Matrix.hpp"
 
 void BSmatTest(){ //test de résolution du modèle de Black-Scholes (pas encore fonctionnel)
-    BSparams par(5,5,1,0.01,0.02);
-    std::vector<float> prices{0.2,0.4,0.6,0.8,1.0};
+    BSparams par(100,100,1,0.1,0.1);
+    std::vector<float> prices = priceExample1(100);
     BSSol(par, prices);
 }
 
@@ -23,7 +23,7 @@ void matTest(){
 }
 
 int main(int argc, const char * argv[]) {
-    //BSmatTest();
-    matTest();
+    BSmatTest();
+    //matTest();
     return 0;
 }

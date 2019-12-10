@@ -75,9 +75,25 @@ void BSSol(BSparams &par, std::vector<float> &prices){
     for(int t=0; t<par.tmax; t++){
         m *= Mat;
     }
-    Matrix temp = m*Sol;
+    Matrix temp = Sol*m;
     Sol = temp;
     Sol.show();
+}
+
+
+
+/* priceExample1 :
+Générateur d'un exemple de vecteur de prix initiaux d'un sous-jacent, pour mettre
+en entrée de la fonction BSSol. "gauge" correspond à la finesse du découpage de
+l'intervalle [1,2], dans lequel applique la fonction f:x->1+x^2 pour 0<x<1.*/
+std::vector<float> priceExample1(int gauge){
+    std::vector<float> prices(gauge);
+    for(int k=0; k<gauge; k++){
+        prices[k] = 1+(float(k)/float(gauge))*(float(k)/float(gauge));
+        std::cout << prices[k] << ", ";
+    }
+    std::cout << std::endl;
+    return prices;
 }
 
 
