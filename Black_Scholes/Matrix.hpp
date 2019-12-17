@@ -39,6 +39,14 @@ public:
 
 Matrix quickExp(Matrix &A, int a);
 
-Matrix inverse(Matrix A);
+Matrix transpose(Matrix &A);
+
+void LaTeXShow(Matrix &A); //display for copy-pasting to LaTeX matrix environments
+
+//Les trois prochaines fonctions servent uniquement à inverser une matrice
+void switchColums(Matrix &A, int a, int b);
+void transvect(Matrix &A, int i, int j, float lambda);
+void rearrange(Matrix &A, int i);
+Matrix inverse(Matrix &A);
 
 #endif /* Matrix_hpp */

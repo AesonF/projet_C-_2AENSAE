@@ -60,9 +60,9 @@ void Matrix::show(){
     std::cout << std::endl;
 }
 
-int Matrix::lin(){return m;}
+int Matrix::lin(){return n;}
 
-int Matrix::col(){return n;}
+int Matrix::col(){return m;}
 
 Matrix Matrix::operator *(Matrix &A){
     Matrix Res(n,A.col());
@@ -146,33 +146,72 @@ Matrix quickExp(Matrix &A, int a){
     return C;
 }
 
-Matrix inverse(Matrix A){
-    int n =lin(A);
-    B=Matrix(n,n);
-    for (int i = 0; i < n; i++) {
-        //to create a identity matirx
-        B.load(i,i,1);
-    };
-    for(int i=0;i<n;i++){
-        for (int j=i ; j<n ; j++){
-            B.load(i,j,B.load(i,j)/A.load(i,i));          // B[i,j]=B[i,j]/A[i,i]
-            A.load(i,j,A.load(i,j)/A.load(i,i));          // A[i,j]=A[i,j]/A[i,i]
-            for (int k=i+1 ; k<n ; k++){
-                B.load(k,j,B.load(k,j)-A.load(k,i)*B.load(k,j));                              //B[k,j]=B[k,j]-B[k,i]*A[i,j]
-                A.load(k,j,A.load(k,j)-A.load(k,i)*A.load(k,j));                              //A[k,j]=A[k,j]-A[k,i]*A[i,j]
-            };
-        };
-    };
-        //On obtient à cette etape une matrice triangulaire
-    for(int i=n;i>0;i--){
-        for (int j=i ; j<n ; j++){
-            B.load(i,j,B.load(i,j)/A.load(i,i));
-            A.load(i,j,A.load(i,j)/A.load(i,i));
-                for (int k=i+1 ; k>0 ; k--){
-                     B.load(k,j,B.load(k,j)-A.load(k,i)*B.load(k,j));
-                     A.load(k,j,A.load(k,j)-A.load(k,i)*A.load(k,j));
-                    };
-            };
-        };
+Matrix transpose(Matrix &A){
+    unsigned int n = A.lin();
+    unsigned int m = A.col();
+    Matrix B(m,n);
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            B.load(j,i, A.load(i,j) );
+        }
+    }
+    return B;
+}
+
+
+void LaTeXShow(Matrix &A){
+    unsigned int n = A.lin();
+    unsigned int m = A.col();
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m-1; j++){
+            std::cout << A.load(i,j) << "&";
+        }
+        std::cout << A.load(i,m-1) << "\\\\" << std::endl;
+    }
+}
+
+
+
+//gonna need this for inversion...
+void switchColums(Matrix &A, int a, int b){
+    for(int k=0; k<A.lin(); k++){
+        float aux = A.load(k,a);
+        A.load(k,a,A.load(k,b));
+        A.load(k,b,aux);
+    }
+}
+void transvect(Matrix &A, int i, int j, float lambda){ //A[i] <- A[i] + lambda*A[j]
+    for(int k=0; k<A.lin(); k++){
+        A.load(k,i, A.load(k,i)+lambda*A.load(k,j));
+    }
+}
+
+void rearrange(Matrix &A, int i){ //à utiliser si le terme diagonal de A est nul
+    int goodCol = 0;
+    while(A.load(i,goodCol)==0 and goodCol<A.lin()){goodCol += 1;}
+    switchColums(A,i,goodCol);
+    if(A.load(i,i)==0){std::cout << "Non-inversible" << std::endl;}
+}
+
+Matrix inverse(Matrix &A){
+    int n = A.lin();
+    Matrix B = id(n);
+    float lambda = 0; //pour plus tard...
+    for(int j=n-1; j>0; j--){
+        if(A.load(j,j)==0){rearrange(A,j);}
+        for(int k=j-1; k>=0; k--){
+            lambda = -A.load(j,k)/A.load(j,j);
+            transvect(A,k,j,lambda);
+            transvect(B,k,j,lambda);
+        }
+    }
+    //On obtient à cette etape une matrice triangulaire (c'est vérifié)
+    for(int j=0; j<n; j++){
+        for(int k=j+1; k<n; k++){
+            lambda = -A.load(j,k)/A.load(j,j);
+            transvect(A,k,j,lambda);
+            transvect(B,k,j,lambda);
+        }
+    }
     return(B);
 }

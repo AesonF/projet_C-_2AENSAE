@@ -33,7 +33,7 @@ de toutes les valeurs pour tous les prix envisageables (discrets ici) et renvoie
 un vecteur des valorisations pour un prix donne.*/
 
 //this one creates the transition matrix for going from t to t+1
-void matCreate(BSparams &par, std::vector<float> &prices, Matrix &Mat){
+void matCreate(BSparams &par, Matrix &Mat){
     int m = par.m; float fm = (float)(m);
     int n = par.n;
     float dt = par.tmax/float(n);
@@ -61,16 +61,12 @@ void matCreate(BSparams &par, std::vector<float> &prices, Matrix &Mat){
 
 /* BSSol = Black-Shcholes solution : prend en entrée une instance de la classe
 BSparams, définie en EqRes.hpp, ainsi que le vecteur des prix initiaux du sous-
-jacent, sous forme d'un vecteur de taille par.m */
+jacent, sous forme d'un vecteur de taille par.m*/
 
 void BSSol(BSparams &par, std::vector<float> &prices){
     Matrix Sol(par.m,1,prices);
-    /* "On ne peut pas faire des mathématiques en confondant les
-        vecteurs et les matrices colonnes."
-                              — Sandie Souchet
-    */
     Matrix Mat(par.m, par.n);
-    matCreate(par, prices, Mat);
+    matCreate(par, Mat);
     Matrix m = Mat.copy();
     for(int t=0; t<par.tmax; t++){
         m *= Mat;
@@ -81,14 +77,13 @@ void BSSol(BSparams &par, std::vector<float> &prices){
 }
 
 
-
 /* priceExample1 :
 Générateur d'un exemple de vecteur de prix initiaux d'un sous-jacent, pour mettre
 en entrée de la fonction BSSol. "gauge" correspond à la finesse du découpage de
 l'intervalle [1,2], dans lequel applique la fonction f:x->1+x^2 pour 0<x<1.*/
 std::vector<float> priceExample1(int gauge){
     std::vector<float> prices(gauge);
-    for(int k=0; k<gauge; k++){
+    for(int k=0; k<gauge+1; k++){
         prices[k] = 1+(float(k)/float(gauge))*(float(k)/float(gauge));
         std::cout << prices[k] << ", ";
     }

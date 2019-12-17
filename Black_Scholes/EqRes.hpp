@@ -27,7 +27,7 @@ public:
     float mu;
 };
 
-void matCreate(BSparams &par, std::vector<float> &prices, Matrix &Mat);
+void matCreate(BSparams &par, Matrix &Mat);
 
 void BSSol(BSparams &par, std::vector<float> &prices);
 
