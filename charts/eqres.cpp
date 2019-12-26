@@ -68,7 +68,7 @@ Matrix BSSol(BSparams &par, std::vector<float> &prices){
     matCreate(par, Mat);
     Matrix m = inverse(Mat);
     for(int t=0; t<par.tmax; t++){
-        m *= Mat;
+        m *= inverse(Mat);
         Matrix tempPrices = m*Sol;
         for(int k=0; k<par.m; k++){
             Valuations.load(k,t,tempPrices.load(k,0));
