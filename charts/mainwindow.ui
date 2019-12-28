@@ -10,10 +10,29 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>.SF NS Text</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>330</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hello</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -23,6 +42,12 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuBlack_Scholes_rules">
+    <property name="title">
+     <string>Black Scholes rules</string>
+    </property>
+   </widget>
+   <addaction name="menuBlack_Scholes_rules"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

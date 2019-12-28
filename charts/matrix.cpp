@@ -167,7 +167,7 @@ void LaTeXShow(Matrix &A){
 
 
 //gonna need this for inversion...
-void switchColums(Matrix &A, int a, int b){
+void dilate(Matrix &A, int a, int b){
     for(int k=0; k<A.lin(); k++){
         float aux = A.load(k,a);
         A.load(k,a,A.load(k,b));
@@ -183,7 +183,7 @@ void transvect(Matrix &A, int i, int j, float lambda){ //A[i] <- A[i] + lambda*A
 void rearrange(Matrix &A, int i){ //à utiliser si le terme diagonal de A est nul
     int goodCol = 0;
     while(A.load(i,goodCol)==0 and goodCol<A.lin()){goodCol += 1;}
-    switchColums(A,i,goodCol);
+    dilate(A,i,goodCol);
     if(A.load(i,i)==0){std::cout << "Non-inversible" << std::endl;}
 }
 
