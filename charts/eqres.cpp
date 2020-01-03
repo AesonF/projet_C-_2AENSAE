@@ -114,7 +114,7 @@ void matCreate(BSparams &par, Matrix &Mat){
         fi = float(i);
         for(int j=0; j<n; j++){
 
-            float eta = 1/(1-par.mu*dt);
+            float eta = 1; // float eta = 1/(1-par.mu*dt);
 
             if( i-j<-1 or i-j>1 ){a = 0;}
 
@@ -277,4 +277,35 @@ void singleSim(float tmax, int n, float S0, float sigma, float mu)
         T[i] = tmax*i/n;
         S0 = S1;
     }
+}
+
+
+
+
+//====================== RÉSOLUTION POUR 1 VALEUR ======================//
+// (dans le cas d'un call vanille européen, voir algorithme ci-dessus
+//  pour plus de détails)
+float PricingExplicit(float S, float K, float r, float T, float sigma){
+    float d1 = ( log(S/K) + (r + sigma*sigma /2)*T)/(sigma*sqrt(T) );
+    float d2 = d1 - sigma*sqrt(T);
+    float Ke = K*exp(-r*T);
+    float N1 = 0.5*erfc( -d1/sqrt(2) );
+    float N2 = 0.5*erfc( -d2/sqrt(2) );
+    float C = S*N1 - Ke*N2;
+    return C;
+}
+
+
+/*PricingExplicitS retourne la liste des valorisations exactes d'un call vanille européen
+Elle prend en arguments le nombre de subdivisions "prec" du sous-jacent (dont la valeur
+varie entre 0 et 1 par convention) et un call (de format Vanilla).
+*/
+
+std::vector<float> PricingExplicitS(unsigned int prec, Vanilla V){
+    std::vector<float> C;
+    for(int i=0; i<V.m ;i++){
+        float uvalue = float(i)/float(prec); //=underlying value
+        C.push_back( PricingExplicit(uvalue,V.K,V.mu,V.tmax,V.sigma) );
+    }
+    return C;
 }

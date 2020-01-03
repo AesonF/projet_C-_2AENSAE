@@ -37,6 +37,9 @@ void PortCreator(){
 int main(int argc, char *argv[]){
     unsigned int prec = 100;
     BSparams par(prec, prec,0.5,0.01,0.3);
-    int b = displayTest(argc, argv, false, 50, prec, par, 4, 2);
+    int b = displayTest(argc, argv, true, 0, prec, par, 4, 1);
     return b;
+
+    /*float n = PricingExplicit(3850,4100,0.0125,1,0.0168);
+    std::cout << "Explicit price: " << n << std::endl;*/
 }

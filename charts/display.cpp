@@ -62,11 +62,14 @@ QLineSeries * ResExample(bool time, int tranche, unsigned int prec,
 
 
 int displayTest(int argc, char *argv[],bool time, int tranche,
-                unsigned int prec,BSparams par, unsigned int exampleNumber, unsigned int method) {
+                unsigned int prec, BSparams par, unsigned int exampleNumber, unsigned int method) {
 
+    // 1. liste des valorisations selon l'algorithme de résolution (méthodes 1 et 2)
     QLineSeries * series = ResExample(time, tranche , prec, par, exampleNumber, method);
-    std::vector<float> prices = priceExamples(exampleNumber, prec);
+
+    // 2. liste des valorisations à maturité
     QLineSeries *Pseries = new QLineSeries;
+    std::vector<float> prices = priceExamples(exampleNumber, prec);
     for(unsigned int k=0; k<prec; k++){
         qreal yval = qreal(prices[k]);
         Pseries->append(float(k)/prec,yval);
@@ -76,8 +79,24 @@ int displayTest(int argc, char *argv[],bool time, int tranche,
 
     QChart *chart = new QChart;
     chart->legend()->show();
+
     chart->addSeries(series);
     if(time==true){chart->addSeries(Pseries);}
+
+    // 3. liste des valorisations exactes d'un call vanille européen
+    if(time==true and exampleNumber==4){
+        float K = 0.5;
+        bool call = true;
+        Vanilla V = Vanilla(K,call,par.n,par.m,par.tmax,par.sigma,par.mu);
+        std::vector<float> evalues = PricingExplicitS(prec, V);
+        QLineSeries *Tseries = new QLineSeries;
+        for(unsigned int k=0; k<prec; k++){
+            qreal yval = qreal(evalues[k]);
+            Tseries->append(float(k)/prec,yval);
+        }
+        chart->addSeries(Tseries);
+    }
+
     chart->createDefaultAxes();
 
     QFont font;

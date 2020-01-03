@@ -20,12 +20,11 @@ public:
 };
 
 class Vanilla : public BSparams { //call ou put vanille
-private:
-    float K; //le strike, compris entre 0 et 1 pour simplifier
-    bool call;
 public:
     Vanilla(float _K, bool _call, int _n, int _m, float _tmax, float _sigma, float _mu);
     std::vector<float> prices(unsigned int prec);
+    float K; //le strike, compris entre 0 et 1 pour simplifier
+    bool call;
 };
 
 class Portfolio {
@@ -48,6 +47,11 @@ Matrix BSSol(BSparams &par, std::vector<float> &prices, unsigned int method);
 void singleSim(float tmax, int n, float S0, float sigma, float mu);
 
 std::vector<float> priceExamples(unsigned int number, unsigned int gauge);
+
+
+// NOUVEAUX ALGORITHMES
+float PricingExplicit(float S, float K, float r, float T, float sigma);
+std::vector<float> PricingExplicitS(unsigned int prec, Vanilla V);
 
 
 #endif // EQRES_H
