@@ -124,3 +124,44 @@ int displayTest(int argc, char *argv[],bool time, int tranche,
 
     return a.exec();
 }
+
+
+
+int displayVector(std::vector<float> X, std::vector<std::vector<float>> Y, int argc, char *argv[]){
+    QApplication a(argc, argv);
+
+    QChart *chart = new QChart;
+    chart->legend()->show();
+
+    QPen pen(QRgb(0x0000000));
+    pen.setWidth(2);
+
+    for(unsigned int r=0; r<Y.size(); r++){
+        QLineSeries * series = new QLineSeries;
+        for(unsigned int k=0; k<X.size(); k++){
+            float y = Y[r][k];
+            qreal xval = qreal(X[k]);
+            qreal yval = qreal(y);
+            series->append(xval,yval);
+        }
+        chart->addSeries(series);
+        series->setPen(pen);
+    }
+
+    chart->createDefaultAxes();
+
+    QFont font;
+    font.setPixelSize(18);
+    chart->setTitleFont(font);
+    chart->setTitle("Generic plot");
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    QMainWindow window;
+    window.setCentralWidget(chartView);
+    window.resize(700,500);
+    window.show();
+
+    return a.exec();
+}

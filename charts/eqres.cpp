@@ -25,6 +25,7 @@ BSparams::BSparams(){ //constructeur par défaut
 }
 
 
+
 //========================== OPTION VANILLE ==========================//
 Vanilla::Vanilla(float _K, bool _call, int _n, int _m, float _tmax, float _sigma, float _mu){
     n = _n;
@@ -36,7 +37,8 @@ Vanilla::Vanilla(float _K, bool _call, int _n, int _m, float _tmax, float _sigma
     call = _call;
 }
 
-std::vector<float> Vanilla::prices(unsigned int prec){ //prec = nombre de subdivisions
+std::vector<float> Vanilla::prices(){ //prec = nombre de subdivisions
+    unsigned int prec = this->n;
     std::vector<float> p;
     for(int k=0; k<int(prec*K); k++){ //entre 0 et le strike
         if(call){p.push_back(0);}
@@ -77,7 +79,7 @@ std::vector<float> Portfolio::presentValue(unsigned int prec, int method){ //val
         float tmax = L[k].tmax;
         float sigma = L[k].sigma;
         float mu = L[k].mu;
-        std::vector<float> prices = L[k].prices(prec);
+        std::vector<float> prices = L[k].prices();
         BSparams par(n,m,tmax,sigma,mu);
         Matrix localSol = BSSol(par, prices, method);
         for(unsigned int v=0; v<n; v++){
@@ -163,7 +165,6 @@ Matrix YMatrix(BSparams &par){
 /* BSSol = Black-Shcholes solution : prend en entrée une instance de la classe
 BSparams, définie en EqRes.hpp, ainsi que le vecteur des prix initiaux du sous-
 jacent, sous forme d'un vecteur de taille par.m */
-
 Matrix BSSol(BSparams &par, std::vector<float> &prices, unsigned int method){
     Matrix Valuations(par.m,par.n);
     Matrix Sol(par.m,1,prices);
@@ -201,7 +202,35 @@ Matrix BSSol(BSparams &par, std::vector<float> &prices, unsigned int method){
 }
 
 
+Matrix BSSol(Vanilla V, unsigned int method){
+    unsigned int n = V.n;
+    unsigned int m = V.m;
+    float tmax = V.tmax;
+    float mu = V.mu;
+    float sigma = V.sigma;
 
+    std::vector<float> prices;
+    prices = V.prices();
+
+    BSparams par(n,m,tmax,sigma,mu);
+
+    return( BSSol(par, prices, method) );
+}
+
+
+
+std::vector<float> PFvalue(Portfolio P){
+    std::vector<float> res;
+    for(unsigned int k=0; k<P.l; k++){
+        Matrix V = BSSol(P.L[k], 2);
+        res.push_back( V.load(0,k) );
+    }
+    for(unsigned int k=0; k<P.l; k++){
+        res[k] /= float(P.l);
+    }
+
+    return res;
+}
 
 
 
@@ -227,7 +256,7 @@ std::vector<float> priceExamples(unsigned int number, unsigned int gauge){
 
     else if(number == 2){
         for(unsigned int k=0; k<gauge; k++){
-            prices[k] = exp(float(k)*log(10)/float(gauge-1));
+            prices[k] = exp(float(k)*log(10)/float(gauge-1)) - 2;
         }
     }
 
