@@ -1,4 +1,4 @@
-# Total BS : pricing with the Black-Scholes model
+# PDE solver for Black-Scholes
 
 ## Team
 Yacine Falaki, Aeson Feehan
